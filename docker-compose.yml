@@ -4,9 +4,9 @@ services:
       context: ./php
     container_name: pemweb_php
     healthcheck:
-      test: ["CMD", "php", "-v"]
+      test: ["CMD-SHELL", "php artisan --version"]
       interval: 10s
-      timeout: 5s
+      timeout: 10s
       retries: 5
     volumes:
       - ./src:/var/www/html
@@ -20,10 +20,10 @@ services:
       context: ./nginx
     container_name: pemweb_nginx
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost"]
+      test: ["CMD-SHELL", "curl -k -fsSL https://pemweb.test || exit 1"]
       interval: 10s
       timeout: 5s
-      retries: 5
+      retries: 30
     ports:
       - "443:443"
       - "80:80"
