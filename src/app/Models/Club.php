@@ -6,7 +6,13 @@ use Illuminate\Database\Eloquent\Model;
 
 class Club extends Model
 {
-    protected $fillable = ['name', 'city'];
+    protected $fillable = [
+        'name',
+        'city',
+        'stadium',
+        'founded_year',
+        'coach_name',
+    ];
 
     public function players()
     {

@@ -3,7 +3,6 @@
 namespace App\Filament\Admin\Resources;
 
 use App\Filament\Admin\Resources\ClubResource\Pages;
-use App\Filament\Admin\Resources\ClubResource\RelationManagers;
 use App\Models\Club;
 use Filament\Forms;
 use Filament\Forms\Form;
@@ -11,7 +10,6 @@ use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class ClubResource extends Resource
 {
@@ -26,9 +24,28 @@ class ClubResource extends Resource
                 Forms\Components\TextInput::make('name')
                     ->required()
                     ->maxLength(255),
+
                 Forms\Components\TextInput::make('city')
+                    ->label('City')
                     ->maxLength(255)
-                    ->default(null),
+                    ->nullable(),
+
+                Forms\Components\TextInput::make('stadium')
+                    ->label('Stadium')
+                    ->maxLength(255)
+                    ->nullable(),
+
+                Forms\Components\TextInput::make('founded_year')
+                    ->label('Founded Year')
+                    ->numeric()
+                    ->minValue(1800)
+                    ->maxValue(now()->year)
+                    ->nullable(),
+
+                Forms\Components\TextInput::make('coach_name')
+                    ->label('Coach Name')
+                    ->maxLength(255)
+                    ->nullable(),
             ]);
     }
 
@@ -36,14 +53,17 @@ class ClubResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('name')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('city')
-                    ->searchable(),
+                Tables\Columns\TextColumn::make('name')->searchable(),
+                Tables\Columns\TextColumn::make('city')->searchable(),
+                Tables\Columns\TextColumn::make('stadium')->label('Stadium')->sortable(),
+                Tables\Columns\TextColumn::make('founded_year')->label('Founded'),
+                Tables\Columns\TextColumn::make('coach_name')->label('Coach'),
+
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
+
                 Tables\Columns\TextColumn::make('updated_at')
                     ->dateTime()
                     ->sortable()
