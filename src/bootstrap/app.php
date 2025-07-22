@@ -13,8 +13,11 @@ return Application::configure(basePath: dirname(__DIR__))
         api: __DIR__ . '/../routes/api.php',
     )
     ->withMiddleware(function (Middleware $middleware) {
-        //
+        // Tambahkan middleware SecurityHeaders di sini
+        $middleware->append(SecurityHeaders::class);
+        $middleware->append(\App\Http\Middleware\RestrictRobotsTxt::class);
     })
     ->withExceptions(function (Exceptions $exceptions) {
         //
-    })->create();
+    })
+    ->create();
